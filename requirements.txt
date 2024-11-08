@@ -4,6 +4,4 @@ numpy==1.26.4
 pandas==2.1.4
 reportlab==4.2.5
 torch==2.5.1
-torchcam==0.4.0
-torchvision==0.20.1
 
