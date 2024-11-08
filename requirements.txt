@@ -28,7 +28,6 @@ reportlab==4.2.5
 requests==2.31.0
 SciPy==1.11.4
 sympy==1.13.1
-systemd-python==235
 tables==3.9.2
 terminado==0.17.1
 tinycss2==1.2.1
