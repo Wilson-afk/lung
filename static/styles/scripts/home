@@ -1,0 +1,84 @@
+jQuery(function($) {
+ function homeSplash() {
+  if ($('header').css('z-index') === '999') {$('body').addClass('forceSplashHeight');} else {$('body').removeClass('forceSplashHeight');}
+ }
+ function whyUsHeights() {
+  $('#why-us-tiles .tile-container .tile-content').height('initial');
+
+  if ($("body").css('background-color')==="rgb(255, 255, 255)") {
+   // Get an array of all element heights
+   var elementHeights = $('#why-us-tiles .tile-container .tile-content').map(function() {
+    return ($(this).height() + 30);
+   }).get();
+   // Math.max takes a variable number of arguments
+   // `apply` is equivalent to passing each height as an argument
+   var maxHeight = Math.max.apply(null, elementHeights);
+   // Set each height to the max height
+   $('#why-us-tiles .tile-container .tile-content').height(maxHeight);
+  } else if ($("body").css('background-color')==="rgb(255, 255, 254)") {
+   // Do nothing, this is the smartphone size and nothing need be changed
+  } else {
+   // Get an array of all element heights
+   var elementHeights = $('#why-us-tiles .tile-container .tile-content').map(function() {
+    return ($(this).height());
+   }).get();
+   // Math.max takes a variable number of arguments
+   // `apply` is equivalent to passing each height as an argument
+   var maxHeight = Math.max.apply(null, elementHeights);
+   // Set each height to the max height
+   $('#why-us-tiles .tile-container .tile-content').height(maxHeight);
+  }
+ }
+ function sliderRespond() {
+  var windowWidth = $(window).width();
+  if (windowWidth > 767) {$('ul.slides').children('li').width(windowWidth);}
+ }
+ 
+ function addWhyUsStyles() {
+ 	$("p.tile-more").next().addClass("tile-temp");
+    $("p.tile-more").remove();
+    $("p.tile-temp").addClass("tile-more");
+    $("p.tile-temp").removeClass("tile-temp");
+    $("p:empty").remove();
+ }
+ $('a.more').on('click', function(){
+  if ($(this).hasClass('active') ) {
+   $(this).removeClass('active');
+   $(this).parent().parent().parent().children('p.tile-more').removeClass('open').slideUp();
+  } else {
+  $('a.more').removeClass('active');
+  $('p.tile-more.open').removeClass('open').slideUp();
+  $(this).addClass('active');
+  $(this).parent().parent().parent().children('p.tile-more').addClass('open').slideDown();
+  }
+  return false;
+ });
+ $(document).ready(function() {
+  homeSplash();
+  whyUsHeights();
+  addWhyUsStyles();
+  var resizeIt;
+  var windowW;
+  var windowH;
+  function finishedResizing() {
+   if ($(window).width() !== windowW) {
+    windowW = $(window).width();
+    //-- Width Changed --//
+    homeSplash();
+    whyUsHeights();
+    sliderRespond();
+   } else if ($(window).height() !== windowH) {
+    windowH = $(window).height();
+    //-- Height Changed --//
+   } else {
+    //-- No actual resize, do nothing --//
+   }
+  }
+  $(window).resize(function() {
+   clearTimeout(resizeIt);
+   var windowW = $(window).width();
+   var windowH = $(window).height();
+   resizeIt = setTimeout(finishedResizing, 100);
+  });
+ });
+});

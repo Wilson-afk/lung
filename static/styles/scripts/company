@@ -1,0 +1,323 @@
+jQuery(function($) {
+ function getNumeral(str) {
+  return str.split('-')[1];
+ }
+ function newsTileHeights() {
+  $('#tiles .news-item #content').height('initial');
+   if ($("body").css('background-color')==="rgb(255, 255, 255)") {
+   // Do nothing, this is the smartphone size and nothing need be changed
+  } else if ($("body").css('background-color')==="rgb(255, 255, 254)") {
+   // Do nothing, this is the smartphone size and nothing need be changed
+  } else {
+   // Get an array of all element heights
+   var elementHeights = $('#tiles .news-item #content').map(function() {
+    return ($(this).height());
+   }).get();
+   // Math.max takes a variable number of arguments
+   // `apply` is equivalent to passing each height as an argument
+   var maxHeight = Math.max.apply(null, elementHeights);
+   // Set each height to the max height
+   $('#tiles .news-item #content').height(maxHeight);
+  }
+ }
+ $('.team-member').click(function(){
+  var thisItem = "#"+$(this).attr('id');
+  var rollTarget;
+/*-- If this is 'selected' then we need to animate the content closed and remove it --*/
+  if ($(thisItem).hasClass('selected') ) {
+   var wWidth = $(window).width();
+   var thisID = $(this).parent().attr('id');
+   var selectedMember = getNumeral(thisID);
+   var targetBio = '#bio-'+selectedMember;
+   if ( wWidth <= 768 && selectedMember > 14 ) {
+    rollTarget = '#rollout11';
+   } else if ( wWidth <= 768 && selectedMember > 12 ) {
+    rollTarget = '#rollout9';
+   } else if ( wWidth <= 768 && selectedMember > 10 ) {
+    rollTarget = '#rollout8';
+   } else if ( wWidth <= 768 && selectedMember > 8 ) {
+    rollTarget = '#rollout7';
+   } else if ( wWidth <= 768 && selectedMember > 6 ) {
+    rollTarget = '#rollout5';
+   } else if ( wWidth <= 768 && selectedMember > 4 ) {
+    rollTarget = '#rollout4';
+   } else if ( wWidth <= 768 && selectedMember > 2 ) {
+    rollTarget = '#rollout3';
+   } else if ( wWidth <= 768 ) {
+    rollTarget = '#rollout1';
+   } else if ( wWidth > 768 && selectedMember > 12 ) {
+    rollTarget = '#rollout10';
+   } else if ( wWidth > 768 && selectedMember > 9 ) {
+    rollTarget = '#rollout8';
+   } else if ( wWidth > 768 && selectedMember > 6 ) {
+    rollTarget = '#rollout6';
+   } else if ( wWidth > 768 && selectedMember > 3 ) {
+    rollTarget = '#rollout4';
+   } else {
+    rollTarget = '#rollout2';
+   }
+   $(thisItem).removeClass('selected').addClass('inactive');
+   $(rollTarget).animate({
+    height: 0
+   }, 300, function() {
+    $('div.bio section.bio-content').remove();
+    $('div.bio').css('display','none');
+   });
+/*-- If something else is 'selected' then we just need to swap the content --*/
+  } else if ($(".acol3 > .selected").length > 0) {
+   $(".acol3 > .selected").removeClass('selected').addClass('inactive');
+   $(this).removeClass('inactive');
+   $('div.acol3 a.team-member').removeClass('selected');
+   $(this).addClass('selected');
+   $('div.bio section.bio-content').remove();
+   $('div.bio').css('display','none');
+   var wWidth = $(window).width();
+   var thisID = $(this).parent().attr('id');
+   var selectedMember = getNumeral(thisID);
+   var targetBio = '#bio-'+selectedMember;
+   if ( wWidth <= 768 && selectedMember > 14 ) {
+    rollTarget = '#rollout11';
+   } else if ( wWidth <= 768 && selectedMember > 12 ) {
+    rollTarget = '#rollout9';
+   } else if ( wWidth <= 768 && selectedMember > 10 ) {
+    rollTarget = '#rollout8';
+   } else if ( wWidth <= 768 && selectedMember > 8 ) {
+    rollTarget = '#rollout7';
+   } else if ( wWidth <= 768 && selectedMember > 6 ) {
+    rollTarget = '#rollout5';
+   } else if ( wWidth <= 768 && selectedMember > 4 ) {
+    rollTarget = '#rollout4';
+   } else if ( wWidth <= 768 && selectedMember > 2 ) {
+    rollTarget = '#rollout3';
+   } else if ( wWidth <= 768 ) {
+    rollTarget = '#rollout1';
+   } else if ( wWidth > 768 && selectedMember > 12 ) {
+    rollTarget = '#rollout10';
+   } else if ( wWidth > 768 && selectedMember > 9 ) {
+    rollTarget = '#rollout8';
+   } else if ( wWidth > 768 && selectedMember > 6 ) {
+    rollTarget = '#rollout6';
+   } else if ( wWidth > 768 && selectedMember > 3 ) {
+    rollTarget = '#rollout4';
+   } else {
+    rollTarget = '#rollout2';
+   }
+   $(rollTarget).css('display','block');
+   $(rollTarget).css('height','0');
+   var clonedBio = $(targetBio).clone(true);
+   $(clonedBio).appendTo( rollTarget );
+   var setHeight = $(clonedBio).height() + 70;
+   $(rollTarget).animate({height:setHeight},300);
+/*-- If nothing else is 'selected' then we need to animate the content open and insert --*/
+  } else {
+   $(this).removeClass('inactive');
+   $('div.acol3 a.team-member').removeClass('selected');
+   $(this).addClass('selected');
+   $('div.bio section.bio-content').remove();
+   $('div.bio').css('display','none');
+   var wWidth = $(window).width();
+   var thisID = $(this).parent().attr('id');
+   var selectedMember = getNumeral(thisID);
+   var targetBio = '#bio-'+selectedMember;
+   if ( wWidth <= 768 && selectedMember > 14 ) {
+    rollTarget = '#rollout11';
+   } else if ( wWidth <= 768 && selectedMember > 12 ) {
+    rollTarget = '#rollout9';
+   } else if ( wWidth <= 768 && selectedMember > 10 ) {
+    rollTarget = '#rollout8';
+   } else if ( wWidth <= 768 && selectedMember > 8 ) {
+    rollTarget = '#rollout7';
+   } else if ( wWidth <= 768 && selectedMember > 6 ) {
+    rollTarget = '#rollout5';
+   } else if ( wWidth <= 768 && selectedMember > 4 ) {
+    rollTarget = '#rollout4';
+   } else if ( wWidth <= 768 && selectedMember > 2 ) {
+    rollTarget = '#rollout3';
+   } else if ( wWidth <= 768 ) {
+    rollTarget = '#rollout1';
+   } else if ( wWidth > 768 && selectedMember > 12 ) {
+    rollTarget = '#rollout10';
+   } else if ( wWidth > 768 && selectedMember > 9 ) {
+    rollTarget = '#rollout8';
+   } else if ( wWidth > 768 && selectedMember > 6 ) {
+    rollTarget = '#rollout6';
+   } else if ( wWidth > 768 && selectedMember > 3 ) {
+    rollTarget = '#rollout4';
+   } else {
+    rollTarget = '#rollout2';
+   }
+   $(rollTarget).css('display','block');
+   $(rollTarget).css('height','0');
+   var clonedBio = $(targetBio).clone(true);
+   $(clonedBio).appendTo( rollTarget );
+   var setHeight = $(clonedBio).height() + 70;
+   $(rollTarget).animate({height:setHeight},300);
+  }
+  return false;
+ });
+
+ $('.advisors-member').click(function(){
+  var thisItemA = "#"+$(this).attr('id');
+  var rollTargetA;
+/*-- If this is 'selected' then we need to animate the content closed and remove it --*/
+  if ($(thisItemA).hasClass('selected') ) {
+   var wWidthA = $(window).width();
+   var thisIDa = $(this).parent().attr('id');
+   var selectedMemberA = getNumeral(thisIDa);
+   var targetBioA = '#abio-'+selectedMemberA;
+   if ( wWidthA <= 768 && selectedMemberA > 14 ) {
+    rollTargetA = '#arollout11';
+   } else if ( wWidthA <= 768 && selectedMemberA > 12 ) {
+    rollTargetA = '#arollout9';
+   } else if ( wWidthA <= 768 && selectedMemberA > 10 ) {
+    rollTargetA = '#arollout8';
+   } else if ( wWidthA <= 768 && selectedMemberA > 8 ) {
+    rollTargetA = '#arollout7';
+   } else if ( wWidthA <= 768 && selectedMemberA > 6 ) {
+    rollTargetA = '#arollout5';
+   } else if ( wWidthA <= 768 && selectedMemberA > 4 ) {
+    rollTargetA = '#arollout4';
+   } else if ( wWidthA <= 768 && selectedMemberA > 2 ) {
+    rollTargetA = '#arollout3';
+   } else if ( wWidthA <= 768 ) {
+    rollTargetA = '#arollout1';
+   } else if ( wWidthA > 768 && selectedMemberA > 12 ) {
+    rollTargetA = '#arollout10';
+   } else if ( wWidthA > 768 && selectedMemberA > 9 ) {
+    rollTargetA = '#arollout8';
+   } else if ( wWidthA > 768 && selectedMemberA > 6 ) {
+    rollTargetA = '#arollout6';
+   } else if ( wWidthA > 768 && selectedMemberA > 3 ) {
+    rollTargetA = '#arollout4';
+   } else {
+    rollTargetA = '#arollout2';
+   }
+   $(thisItemA).removeClass('selected').addClass('inactive');
+   $(rollTargetA).animate({
+    height: 0
+   }, 300, function() {
+    $('div.abio section.abio-content').remove();
+    $('div.abio').css('display','none');
+   });
+/*-- If something else is 'selected' then we just need to swap the content --*/
+  } else if ($(".aacol3 > .selected").length > 0) {
+   $(".aacol3 > .selected").removeClass('selected').addClass('inactive');
+   $(this).removeClass('inactive');
+   $('div.aacol3 a.advisors-member').removeClass('selected');
+   $(this).addClass('selected');
+   $('div.abio section.abio-content').remove();
+   $('div.abio').css('display','none');
+   var wWidthA = $(window).width();
+   var thisIDa = $(this).parent().attr('id');
+   var selectedMemberA = getNumeral(thisIDa);
+   var targetBioA = '#abio-'+selectedMemberA;
+   if ( wWidthA <= 768 && selectedMemberA > 14 ) {
+    rollTargetA = '#arollout11';
+   } else if ( wWidthA <= 768 && selectedMemberA > 12 ) {
+    rollTargetA = '#arollout9';
+   } else if ( wWidthA <= 768 && selectedMemberA > 10 ) {
+    rollTargetA = '#arollout8';
+   } else if ( wWidthA <= 768 && selectedMemberA > 8 ) {
+    rollTargetA = '#arollout7';
+   } else if ( wWidthA <= 768 && selectedMemberA > 6 ) {
+    rollTargetA = '#arollout5';
+   } else if ( wWidthA <= 768 && selectedMemberA > 4 ) {
+    rollTargetA = '#arollout4';
+   } else if ( wWidthA <= 768 && selectedMemberA > 2 ) {
+    rollTargetA = '#arollout3';
+   } else if ( wWidthA <= 768 ) {
+    rollTargetA = '#arollout1';
+   } else if ( wWidthA > 768 && selectedMemberA > 12 ) {
+    rollTargetA = '#arollout10';
+   } else if ( wWidthA > 768 && selectedMemberA > 9 ) {
+    rollTargetA = '#arollout8';
+   } else if ( wWidthA > 768 && selectedMemberA > 6 ) {
+    rollTargetA = '#arollout6';
+   } else if ( wWidthA > 768 && selectedMemberA > 3 ) {
+    rollTargetA = '#arollout4';
+   } else {
+    rollTargetA = '#arollout2';
+   }
+   $(rollTargetA).css('display','block');
+   $(rollTargetA).css('height','0');
+   var clonedBioA = $(targetBioA).clone(true);
+   $(clonedBioA).appendTo( rollTargetA );
+   var setHeightA = $(clonedBioA).height() + 70;
+   $(rollTargetA).animate({height:setHeightA},300);
+/*-- If nothing else is 'selected' then we need to animate the content open and insert --*/
+  } else {
+   $(this).removeClass('inactive');
+   $('div.aacol3 a.advisors-member').removeClass('selected');
+   $(this).addClass('selected');
+   $('div.abio section.abio-content').remove();
+   $('div.abio').css('display','none');
+   var wWidthA = $(window).width();
+   var thisIDa = $(this).parent().attr('id');
+   var selectedMemberA = getNumeral(thisIDa);
+   var targetBioA = '#abio-'+selectedMemberA;
+   if ( wWidthA <= 768 && selectedMemberA > 14 ) {
+    rollTargetA = '#arollout11';
+   } else if ( wWidthA <= 768 && selectedMemberA > 12 ) {
+    rollTargetA = '#arollout9';
+   } else if ( wWidthA <= 768 && selectedMemberA > 10 ) {
+    rollTargetA = '#arollout8';
+   } else if ( wWidthA <= 768 && selectedMemberA > 8 ) {
+    rollTargetA = '#arollout7';
+   } else if ( wWidthA <= 768 && selectedMemberA > 6 ) {
+    rollTargetA = '#arollout5';
+   } else if ( wWidthA <= 768 && selectedMemberA > 4 ) {
+    rollTargetA = '#arollout4';
+   } else if ( wWidthA <= 768 && selectedMemberA > 2 ) {
+    rollTargetA = '#arollout3';
+   } else if ( wWidthA <= 768 ) {
+    rollTargetA = '#arollout1';
+   } else if ( wWidthA > 768 && selectedMemberA > 12 ) {
+    rollTargetA = '#arollout10';
+   } else if ( wWidthA > 768 && selectedMemberA > 9 ) {
+    rollTargetA = '#arollout8';
+   } else if ( wWidthA > 768 && selectedMemberA > 6 ) {
+    rollTargetA = '#arollout6';
+   } else if ( wWidthA > 768 && selectedMemberA > 3 ) {
+    rollTargetA = '#arollout4';
+   } else {
+    rollTargetA = '#arollout2';
+   }
+   $(rollTargetA).css('display','block');
+   $(rollTargetA).css('height','0');
+   var clonedBioA = $(targetBioA).clone(true);
+   $(clonedBioA).appendTo( rollTargetA );
+   var setHeightA = $(clonedBioA).height() + 70;
+   $(rollTargetA).animate({height:setHeightA},300);
+  }
+  return false;
+ });
+ 
+ function resetTeam() {
+  $('div.acol3 a.team-member').removeClass('selected').removeClass('inactive').addClass('inactive');
+  $('div.acol3').removeClass('fadeIn').removeClass('flipInY');
+  $('div.bio section.bio-content').remove();
+  $('div.bio').css('height','0');
+  $('div.bio').css('display','none');
+ }
+ function resetAdvisors() {
+  $('div.aacol3 a.advisors-member').removeClass('selected').removeClass('inactive').addClass('inactive');
+  $('div.aacol3').removeClass('fadeIn').removeClass('flipInY');
+  $('div.abio section.abio-content').remove();
+  $('div.abio').css('height','0');
+  $('div.abio').css('display','none');
+ }
+ $(document).ready(function() {
+  newsTileHeights();
+  var windowWidth = $(window).width();
+  $(window).resize(function(){
+   if ($(window).width() !== windowWidth) {
+    windowWidth = $(window).width();
+    resetTeam();
+    resetAdvisors();
+    newsTileHeights();
+   } else {
+    //-- No actual resize, do nothing --//
+   }
+  });
+ });
+});

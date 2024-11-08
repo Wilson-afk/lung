@@ -1,0 +1,15 @@
+// Can also be used with $(document).ready()
+$(window).load(function() {
+  $('.flexslider').flexslider({
+    animation: "slide",
+    animationLoop: true,
+    itemWidth: 400,
+    itemMargin: 5,
+    minItems: 3,
+    maxItems: 3
+  });
+});
+
+$(window).resize(function() {
+
+});

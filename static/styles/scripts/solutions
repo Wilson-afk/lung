@@ -1,0 +1,177 @@
+jQuery(function($) {
+ function svgasimg() {
+  return document.implementation.hasFeature(
+    "http://www.w3.org/TR/SVG11/feature#Image", "1.1");
+}
+ if (!svgasimg()){
+  var e = document.getElementsByTagName("img");
+  if (!e.length){
+   e = document.getElementsByTagName("IMG");
+  }
+   for (var i=0, n=e.length; i<n; i++){
+   var img = e[i],
+   src = img.getAttribute("src");
+   if (src.match(/svgz?$/)) {
+    /* URL ends in svg or svgz */
+    img.setAttribute("src", 
+    img.getAttribute("data-fallback"));
+   }
+  }    
+ }
+ function getNumeral(str) {
+  return str.split('-')[1];
+ }
+ $('a.x-icon-link').on('click', function(){
+  $(this).toggleClass('active');
+  $(this).parent().children('.use-case').slideToggle();
+ });
+ $('.solutions-item-a').click(function(){
+  var thisItem = '#'+$(this).parent().attr('id');
+  var rollTarget;
+/*-- If this is 'selected' then we need to animate the content closed and remove it --*/
+  if ($(thisItem).children('a').hasClass('selected') ) {
+   var wWidth = $(window).width();
+   var thisID = $(this).parent().attr('id');
+   var selectedSolutions = getNumeral(thisID);
+   var targetSolutionsAnswer = '#solutions-answer-'+selectedSolutions;
+   if ( wWidth <= 768 && selectedSolutions > 10 ) {
+    rollTarget = '#wrollout8';
+   } else if ( wWidth <= 768 && selectedSolutions > 8 ) {
+    rollTarget = '#wrollout7';
+   } else if ( wWidth <= 768 && selectedSolutions > 6 ) {
+    rollTarget = '#wrollout5';
+   } else if ( wWidth <= 768 && selectedSolutions > 4 ) {
+    rollTarget = '#wrollout4';
+   } else if ( wWidth <= 768 && selectedSolutions > 2 ) {
+    rollTarget = '#wrollout3';
+   } else if ( wWidth <= 768 ) {
+    rollTarget = '#wrollout1';
+   } else if ( wWidth > 768 && selectedSolutions > 9 ) {
+    rollTarget = '#wrollout8';
+   } else if ( wWidth > 768 && selectedSolutions > 6 ) {
+    rollTarget = '#wrollout6';
+   } else if ( wWidth > 768 && selectedSolutions > 3 ) {
+    rollTarget = '#wrollout4';
+   } else {
+    rollTarget = '#wrollout2';
+   }
+   $(thisItem).children('a').removeClass('selected').addClass('inactive');
+   $(rollTarget).animate({
+    height: 0
+   }, 300, function() {
+    $('div.solutions-rollout section.solutions-answer-content').remove();
+    $('div.solutions-rollout').css('display','none');
+   });
+/*-- If something else is 'selected' then we just need to swap the content --*/
+  } else if ($(".solutionscol3 > .selected").length > 0) {
+   $(".solutionscol3 > .selected").removeClass('selected').addClass('inactive');
+   $(this).removeClass('inactive');
+   $('div.solutionscol3 a.solutions-item-a').removeClass('selected');
+   $(this).addClass('selected');
+   $('div.solutions-rollout section.solutions-answer-content').remove();
+   $('div.solutions-rollout').css('display','none');
+   var wWidth = $(window).width();
+   var thisID = $(this).parent().attr('id');
+   var selectedSolutions = getNumeral(thisID);
+   var targetSolutionsAnswer = '#solutions-answer-'+selectedSolutions;
+   if ( wWidth <= 768 && selectedSolutions > 10 ) {
+    rollTarget = '#wrollout8';
+   } else if ( wWidth <= 768 && selectedSolutions > 8 ) {
+    rollTarget = '#wrollout7';
+   } else if ( wWidth <= 768 && selectedSolutions > 6 ) {
+    rollTarget = '#wrollout5';
+   } else if ( wWidth <= 768 && selectedSolutions > 4 ) {
+    rollTarget = '#wrollout4';
+   } else if ( wWidth <= 768 && selectedSolutions > 2 ) {
+    rollTarget = '#wrollout3';
+   } else if ( wWidth <= 768 ) {
+    rollTarget = '#wrollout1';
+   } else if ( wWidth > 768 && selectedSolutions > 9 ) {
+    rollTarget = '#wrollout8';
+   } else if ( wWidth > 768 && selectedSolutions > 6 ) {
+    rollTarget = '#wrollout6';
+   } else if ( wWidth > 768 && selectedSolutions > 3 ) {
+    rollTarget = '#wrollout4';
+   } else {
+    rollTarget = '#wrollout2';
+   }
+   $(rollTarget).css('display','block');
+   $(rollTarget).css('height','0');
+   var clonedSolutionsAnswer = $(targetSolutionsAnswer).clone(true);
+   $(clonedSolutionsAnswer).appendTo( rollTarget );
+   $(targetSolutionsAnswer).css('display','block');
+   var setHeight = $(targetSolutionsAnswer).height() + 34;
+   $(rollTarget).animate({height:setHeight},300);
+/*-- If nothing else is 'selected' then we need to animate the content open and insert --*/
+  } else {
+   $(this).removeClass('inactive');
+   $('div.solutionscol3 a.solutions-item-a').removeClass('selected');
+   $(this).addClass('selected');
+   $('div.solutions-rollout section.solutions-answer-content').remove();
+   $('div.solutions-rollout').css('display','none');
+   var wWidth = $(window).width();
+   var thisID = $(this).parent().attr('id');
+   var selectedSolutions = getNumeral(thisID);
+   var targetSolutionsAnswer = '#solutions-answer-'+selectedSolutions;
+   if ( wWidth <= 768 && selectedSolutions > 10 ) {
+    rollTarget = '#wrollout8';
+   } else if ( wWidth <= 768 && selectedSolutions > 8 ) {
+    rollTarget = '#wrollout7';
+   } else if ( wWidth <= 768 && selectedSolutions > 6 ) {
+    rollTarget = '#wrollout5';
+   } else if ( wWidth <= 768 && selectedSolutions > 4 ) {
+    rollTarget = '#wrollout4';
+   } else if ( wWidth <= 768 && selectedSolutions > 2 ) {
+    rollTarget = '#wrollout3';
+   } else if ( wWidth <= 768 ) {
+    rollTarget = '#wrollout1';
+   } else if ( wWidth > 768 && selectedSolutions > 9 ) {
+    rollTarget = '#wrollout8';
+   } else if ( wWidth > 768 && selectedSolutions > 6 ) {
+    rollTarget = '#wrollout6';
+   } else if ( wWidth > 768 && selectedSolutions > 3 ) {
+    rollTarget = '#wrollout4';
+   } else {
+    rollTarget = '#wrollout2';
+   }
+   $(rollTarget).css('display','block');
+   $(rollTarget).css('height','0');
+   var clonedSolutionsAnswer = $(targetSolutionsAnswer).clone(true);
+   $(clonedSolutionsAnswer).appendTo( rollTarget );
+   $(targetSolutionsAnswer).css('display','block');
+   var setHeight = $(targetSolutionsAnswer).height() + 34;
+   $(rollTarget).animate({height:setHeight},300);
+  }
+  return false;
+ });
+
+ $('a.close-menu').on('click', function(){
+  $('.solutions-item-a').removeClass('selected').addClass('inactive');
+  $(this).parent().parent().parent().parent().parent().animate({
+   height: 0
+  }, 300, function() {
+   $('div.solutions-rollout section.solutions-answer-content').remove();
+   $('div.solutions-rollout').css('display','none');
+  });
+  return false;
+ });
+ function resetSolutions() {
+  $('.solutions-item-a').removeClass('selected').removeClass('inactive').addClass('inactive');
+  $('div.solutionscol3').removeClass('fadeIn').removeClass('flipInY');
+  $('div.solutions-rollout section.solutions-answer-content').remove();
+  $('div.solutions-rollout').css('height','0');
+  $('div.solutions-rollout').css('display','none');
+}
+ $(document).ready(function() {
+  var windowWidth = $(window).width();
+  $( 'p:empty' ).remove();;
+  $(window).resize(function(){
+   if ($(window).width() !== windowWidth) {
+    windowWidth = $(window).width();
+    resetSolutions();
+   } else {
+    //-- No actual resize, do nothing --//
+   }
+  });
+ });
+});

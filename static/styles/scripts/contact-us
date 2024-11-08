@@ -1,0 +1,5 @@
+jQuery(function($) {
+ $(document).ready(function() {
+  $( '.js-float-label-wrapper' ).FloatLabel();
+ });
+});
