@@ -20,7 +20,7 @@ nvidia-cusparse-cu12==12.3.1.170
 nvidia-nccl-cu12==2.21.5
 nvidia-nvjitlink-cu12==12.4.127
 nvidia-nvtx-cu12==12.4.127
-pandas==2.1.4+dfsg
+pandas==2.1.4
 pillow==10.2.0
 pyzmq==24.0.1
 referencing==0.35.1
