@@ -39,7 +39,6 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            /* Changed from 'center' to 'flex-start' */
             flex-direction: row;
             padding: 20px;
             opacity: 0;
@@ -47,7 +46,6 @@
             animation: slideUp 1.2s ease forwards;
             width: 100%;
             margin-top: 100px;
-            /* Added margin-top to prevent overlap */
         }
         
         @keyframes gradientAnimation {
@@ -128,10 +126,8 @@
             border-radius: 8px;
             border: 2px solid #bb3030;
             width: 100%;
-            /* Changed to full width */
             max-width: 800px;
             margin: 20px auto;
-            /* Centered */
             animation: fadeInUp 1s ease-in-out;
         }
         
@@ -152,10 +148,8 @@
             border-radius: 8px;
             border: 1px solid #444;
             width: 100%;
-            /* Changed to full width */
             max-width: 800px;
             margin: 20px auto;
-            /* Centered */
         }
         
         .prediction-confidence {
@@ -168,10 +162,8 @@
             border-radius: 8px;
             border: 2px solid #28a745;
             width: 100%;
-            /* Changed to full width */
             max-width: 800px;
             margin: 20px auto;
-            /* Centered */
         }
         
         .feedback-section {
@@ -179,10 +171,8 @@
             margin-top: 20px;
             padding: 20px;
             width: 100%;
-            /* Changed to full width */
             max-width: 800px;
             margin: 20px auto;
-            /* Centered */
             background-color: #333;
             border-radius: 8px;
             border: 2px solid #555;
@@ -225,50 +215,6 @@
                 transform: translateY(0);
             }
         }
-        /* .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: #2c2c2c;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            width: 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .modal-message {
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .modal-content button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        
-        .modal-content button:hover {
-            background-color: #218838;
-        } */
         
         .modal-overlay {
             position: fixed;
@@ -486,17 +432,6 @@
 
 
             <div class="content-center">
-                <!-- <section class="image-row">
-                    <div class="image-container">
-                        <img src="{{ url_for('static', filename='images/333.png') }}" alt="CT Scan 1" />
-                        <p class="image-label">Original CT Scan</p>
-                    </div>
-
-                    <div class="image-container">
-                        <img src="{{ url_for('static', filename='images/444.png') }}" alt="Grad-CAM Visualization" />
-                        <p class="image-label">Grad-CAM Output</p>
-                    </div>
-                </section> -->
 
                 <section class="image-row" style="display: flex; justify-content: center; gap: 20px;">
                     <div class="image-container">
@@ -558,11 +493,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!-- <div class="gradcam-description">
-                    The image shows lung {{ predicted_class_label }} with a {{ max_mean_probs }}% confidence, which is low even if the model is certain ( Adenocarcinoma has the smallest uncertainty among all classes) of this diagnosis. For this, we want a low uncertainty
-                    and high confidence in the observed class. Therefore, this diagnosis needs to be reviewed by a healthcare expert.
-                </div> -->
 
                 <div class="gradcam-description">
                     {{ diagnostic_message }}
@@ -626,13 +556,6 @@
         </div>
     </footer>
 
-    <!-- <div class="modal-overlay" id="modal-overlay">
-        <div class="modal-content" id="modal-content">
-            <p class="modal-message" id="modal-message">Thank you for confirming the diagnosis. This feedback will be used to improve the model.</p>
-            <button id="close-modal">Close</button>
-        </div>
-    </div> -->
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = document.getElementById('submitBtn');
@@ -671,84 +594,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-
-
-        // confirmBtn.addEventListener('click', function() {
-        //     showModal("Thank you for confirming the diagnosis. This feedback will be used to improve the model.");
-        // });
-
-        // correctBtn.addEventListener('click', function() {
-        //     correctionSection.style.display = 'block';
-        // });
-
-        // submitCorrectionBtn.addEventListener('click', function() {
-        //     const correctDiagnosis = document.getElementById('correct-diagnosis').value;
-        //     if (correctDiagnosis) {
-        //         showModal("Thank you for the feedback. The model will consider the corrected diagnosis: " + correctDiagnosis);
-        //     } else {
-        //         showModal("Please enter a correct diagnosis.");
-        //     }
-        // });
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Prediction Results</title>
-    <style>
-        .container {
-            max-width: 800px;
-            margin: auto;
-            text-align: center;
-        }
-        
-        .image-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-        
-        .image {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h1>Prediction Results</h1>
-        <p><strong>Predicted Class:</strong> {{ predicted_class_label }}</p>
-        <p><strong>Mean Probabilities:</strong> {{ mean_probs }}</p>
-        <p><strong>Uncertainty per Class:</strong> {{ std_probs }}</p>
-        <p><strong>Predicted Class Uncertainty:</strong> {{ predicted_class_uncertainty }}%</p>
-        <p><strong>Elapsed Time:</strong> {{ elapsed_time }} seconds</p>
-
-        <div class="image-container">
-            <div class="image">
-                <h2>Original Image</h2>
-                <img src="data:image/png;base64,{{ original_img }}" alt="Original Image">
-            </div>
-            <div class="image">
-                <h2>Grad-CAM Visualization</h2>
-                <img src="data:image/png;base64,{{ overlayed_img }}" alt="Grad-CAM Visualization">
-            </div>
-        </div>
-    </div>
-</body>
-
-</html> -->

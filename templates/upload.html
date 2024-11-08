@@ -37,7 +37,6 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            /* overflow: hidden; */
         }
         
         #copyright {
@@ -100,7 +99,6 @@
             text-decoration: none;
             padding: -10px;
         }
-        /* Overlay with fade-in animation */
         
         .overlay {
             position: fixed;
@@ -115,7 +113,6 @@
             z-index: 999;
             animation: fadeIn 0.3s ease-in-out;
         }
-        /* Modern Alert Box */
         
         .alert-box {
             background-color: #fff;
@@ -128,7 +125,6 @@
             color: #333;
             animation: slideIn 0.3s ease-out;
         }
-        /* Close Button */
         
         .close-btn {
             background: #28a745;
@@ -144,7 +140,6 @@
         .close-btn:hover {
             background: #218838;
         }
-        /* Fade-in animation for overlay */
         
         @keyframes fadeIn {
             from {
@@ -154,7 +149,6 @@
                 background: rgba(0, 0, 0, 0.6);
             }
         }
-        /* Slide-in animation for alert box */
         
         @keyframes slideIn {
             from {
@@ -276,52 +270,25 @@
         });
 
         form.addEventListener('submit', function(event) {
-            // Prevent the form from submitting immediately when the submit button is clicked
             event.preventDefault();
 
-            // Display progress bar and reset width
             progressWrapper.style.display = 'block';
             progressBarFill.style.width = '0%';
             progressStatus.textContent = 'Scanning... 0%';
 
             let percentComplete = 0;
 
-            // Simulate progress
             const interval = setInterval(function() {
                 percentComplete += 0.5;
                 progressBarFill.style.width = `${percentComplete}%`;
                 progressStatus.textContent = `Scanning... ${Math.round(percentComplete)}%`;
 
-                // When progress reaches 100%, clear the interval and submit the form
                 if (percentComplete >= 100) {
                     clearInterval(interval);
-                    form.submit(); // Submit the form after progress bar completes
+                    form.submit();
                 }
             }, 20);
         });
-
-
-        // form.addEventListener('submit', function(event) {
-
-        //     progressWrapper.style.display = 'block';
-        //     progressBarFill.style.width = '0%';
-        //     progressStatus.textContent = 'Scanning... 0%';
-
-        //     let percentComplete = 0;
-        //     const interval = setInterval(function() {
-        //         percentComplete += 0.5;
-        //         progressBarFill.style.width = `${percentComplete}%`;
-        //         progressStatus.textContent = `Scanning... ${Math.round(percentComplete)}%`;
-
-        //         if (percentComplete >= 100) {
-        //             clearInterval(interval);
-        //             setTimeout(() => {
-        //                 window.location.href = "{{ url_for('main') }}";
-        //                 form.submit();
-        //             }, 1000);
-        //         }
-        //     }, 20);
-        // });
     </script>
 
 </body>
