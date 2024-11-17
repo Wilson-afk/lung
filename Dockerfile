@@ -4,15 +4,18 @@ FROM python:3.12.3-slim
 # Set the working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container
+# Copy the requirements file first to leverage Docker cache
+COPY requirements.txt /app/requirements.txt
+
+# Upgrade pip and install dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
 COPY . /app
 
-# Install Python dependencies
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Expose the Flask port (update this if using a different port)
+EXPOSE 8000
 
-# Expose the port Flask will use
-EXPOSE 5000
-
-# Run the app with Gunicorn
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
+# Command to run the Flask application
+CMD ["python", "app.py"]
