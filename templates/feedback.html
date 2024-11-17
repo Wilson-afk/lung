@@ -1,0 +1,105 @@
+<!doctype html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-title" content="MolecularMatch">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mm.css') }}" type="text/css" media="all">
+    <title>Diagnosis</title>
+    <meta name='keywords' content='bioinformatics, clinical informatics, clinical trial matching, genome informatics, bespoke data analysis, clinical interpretation, precision oncology, treatment options, therapeutic options, Clinical Decision Support System, Physician Portal, Tumor board support, Variant annotations, Pathology reports, Clinical Interpretation, patient recruitment, physician reporting portal'>
+    <meta name='description' content='Precision oncology, immunotherapy and bioinformatics are combined with clinical insights to empower your solution.'>
+    <link rel='canonical' href='MMPower-Molecular-Knowledgebase'>
+    <script src="{{ url_for('static', filename='styles/ajax/libs/jquery/2.2.2/jquery.min.js') }}"></script>
+    <style>
+        header {
+            background-color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        header a {
+            color: #bb3030;
+            font-weight: bold;
+            font-size: 14px;
+            text-decoration: none;
+            padding: -10px;
+        }
+        
+        body {
+            font-size: 14px;
+        }
+        
+        solution {
+            margin-left: 50px;
+            margin-right: 60px;
+        }
+        
+        #copyright {
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body class="solution-sub MMPower">
+
+    <header>
+        <nav class="present">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="#">Scan</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="{{ url_for('feedback') }}">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <section class="solution" id="ss1" style="margin-bottom: 25px;">
+
+        <div class="margin">
+
+            <div class="wysiwyg">
+
+                <section id="request-a-demo">
+                    <div class="table">
+                        <div class="tr">
+                            <div class="td">
+                                <h1>Sign Up as a Reviewer</h1>
+                                <p style="font-style: italic;">Be Part of the Innovation. Sign Up as a Reviewer and Help Us Deliver Trusted Diagnoses.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="request-splash"></div>
+                </section>
+                <section id="request-form">
+                    <form id="request-demo" class="margin" method="post" action="review">
+
+                        <div class="js-float-label-wrapper half1">
+                            <input type="text" class="text" id="name-first" name="name-first" value="" required="" placeholder="Name">
+                        </div>
+
+                        <div class="js-float-label-wrapper half2">
+                            <input type="text" class="text" id="medical-licence" name="medical-licence" required placeholder="Enter your medical license number">
+                        </div>
+
+
+                        <input style="background-color: #bb3030;" type="submit" id="formsubmit" value="Sign Up">
+                    </form>
+                </section>
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <footer style="position: fixed;">
+        <div id="copyright">
+            <b>Disclaimer: </b>This website is part of an honours research project and should not be used as a substitute for professional lung cancer diagnosis or medical advice. If you have any medical-related inquiries, please consult a healthcare
+            professional.
+        </div>
+    </footer>
+</body>

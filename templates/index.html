@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-title" content="MolecularMatch" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mm.css') }}">
+    <title>Diagnosis</title>
+    <meta name="keywords" content="molecular match, mmpower, molecular test, tumor treatment options, tumor board, molecular assertions, PD1 resistant, PDL1 negative, mutational data, molecular profile, Molecular annotation, mutation level data, Electronic medical record integration"
+    />
+    <meta name="description" content="Advanced clinical informatics knowledge base MMPower, a dynamic molecular search engine." />
+    <link rel="canonical" href="index.html" />
+
+    <script src="{{ url_for('static', filename='styles/ajax/jquery.min.js') }}"></script>
+
+    <style>
+        header {
+            background-color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        header a {
+            color: #bb3030;
+            font-weight: bold;
+            font-size: 14px;
+            text-decoration: none;
+            padding: -10px;
+        }
+        
+        #copyright {
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body class="home index">
+
+    <header>
+        <nav class="present">
+
+            <ul>
+
+                <li>
+                    <a href="#">Home</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('upload') }}">Scan</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('about') }}">About</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('feedback') }}">Sign Up</a>
+                </li>
+
+            </ul>
+        </nav>
+    </header>
+
+
+    <section id="intro" style="font-size: 0.89em;">
+        <div class="margin">
+
+            <section class="flexslider" style="font-size: 0.89em;">
+                <ul class="slides">
+                    <li>
+                        <article>
+                            <div class="tr">
+                                <div class="td">
+                                    <h1>
+                                        Lung cancer is one of the leading causes of cancer-related mortality worldwide, with around 2.2 million diagnoses and 1.8 million fatalities
+                                    </h1>
+
+                                    <p class="justify-mobile">
+                                        This high mortality rate is especially detrimental in middle- and low-income countries, where limited access to early detection, advanced diagnostics, and adequate treatment contribute to poor outcomes.
+                                    </p>
+
+                                    <p>
+                                        <a class="block-button" href="{{ url_for('upload') }}"><b>Click here to start</b></a>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </article>
+                    </li>
+                    <li>
+                        <article>
+                            <div class="tr">
+                                <div class="td">
+                                    <h1>
+                                        The high mortality rate is primarily due to the late-stage diagnosis of the disease
+                                    </h1>
+                                    <p class="justify-mobile">
+                                        This high mortality rate is especially detrimental in middle- and low-income countries, where limited access to early detection, advanced diagnostics, and adequate treatment contribute to poor outcomes.
+                                    </p>
+                                    <p>
+                                        <a class="block-button" href="{{ url_for('upload') }}"><b>Click here to start</b></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </li>
+                    <li>
+                        <article>
+                            <div class="tr">
+                                <div class="td">
+                                    <h1>
+                                        Large, well-annotated datasets are essential for developing accurate diagnostic models, but obtaining such data can be difficult and resource-intensive
+                                    </h1>
+                                    <p class="justify-mobile">
+                                        This high mortality rate is especially detrimental in middle- and low-income countries, where limited access to early detection, advanced diagnostics, and adequate treatment contribute to poor outcomes.
+                                    </p>
+                                    <p>
+                                        <a class="block-button" href="{{ url_for('upload') }}"><b>Click here to start</b></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </section>
+    <hr/>
+
+    <section id="what-we-do" style="font-size: 0.89em;">
+        <div class="margin">
+            <article>
+                <h1>What is this?</h1>
+                <h3>Clinical Intelligence on Demand</h3>
+
+                <p class="justify-mobile">
+                    This platform is designed to detect lung cancer from histological images by leveraging advanced deep learning models. The system is fully automated, providing high-precision diagnostic support, and also offers explainability features to help clinicians
+                    understand and trust the underlying predictions.
+                </p>
+            </article>
+        </div>
+    </section>
+    <hr/>
+    <section id="why-us" style="font-size: 0.89em;">
+        <div class="margin">
+            <article>
+                <h1>Why Automation</h1>
+                <h3>Faster, insightful, scalable, dynamic.</h3>
+                <div id="why-us-tiles">
+                    <div class="tile-container">
+                        <div class="tile-content">
+                            <img src="{{ url_for('static', filename='images/icon-comprehensive.gif') }}" width="113" height="113" alt="" />
+                            <h2>Faster</h2>
+                            <span class="callout">Able to diagnose lung cancer from  <br> histological images immediately</span>
+                            <div class="more-plus-x">
+                                <a class="more" href="javascript: void();">
+                                    <span class="first"></span>
+                                    <span class="second"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <p class="tile-more"></p>
+                        <p>
+                            Our <strong>comprehensive</strong> system is able to distinguish lung cancer (adecarcinoma, large cell carcinoma, squamous cell carcinoma) and normal histological lung images.
+                        </p>
+                    </div>
+                    <div class="tile-spacer"></div>
+
+                    <div class="tile-container">
+                        <div class="tile-content">
+                            <img src="{{ url_for('static', filename='images/icon-automated.gif') }}" width="113" height="113" alt="" />
+                            <h2>Insightful</h2>
+                            <span class="callout">Able to provide comprehensive explanations for predictions through enhanced explainability.</span>
+                            <div class="more-plus-x">
+                                <a class="more" href="javascript: void();">
+                                    <span class="first"></span>
+                                    <span class="second"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <p class="tile-more"></p>
+                        <p>
+                            Our <strong>comprehensive</strong> system also offers also offers explainability for its predictions, allowing clinicians to understand the rationale behind each diagnosis.
+                        </p>
+                    </div>
+                    <div class="tile-spacer"></div>
+
+                    <div class="tile-container">
+                        <div class="tile-content">
+                            <img src="{{ url_for('static', filename='images/icon-quality.gif') }}" width="113" height="113" alt="" />
+                            <h2>Scalable</h2>
+                            <span class="callout">Able to be continuously updated and validated.</span>
+                            <div class="more-plus-x">
+                                <a class="more" href="javascript: void();">
+                                    <span class="first"></span>
+                                    <span class="second"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <p class="tile-more"></p>
+                        <p>
+                            Our <strong>comprehensive</strong> system is able to be continuously validated and updated, ensuring improved accuracy over time.
+                        </p>
+                    </div>
+                    <div class="tile-spacer"></div>
+
+                    <div class="tile-container">
+                        <div class="tile-content">
+                            <img src="{{ url_for('static', filename='images/icon-configurable.gif') }}" width="113" height="113" alt="" />
+                            <h2>Dynamic</h2>
+                            <span class="callout">Able to process large volumes of data continuously</span>
+                            <div class="more-plus-x">
+                                <a class="more" href="javascript: void();">
+                                    <span class="first"></span>
+                                    <span class="second"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <p class="tile-more"></p>
+                        <p>
+                            Our <strong>comprehensive</strong> system efficiently handles large volumes of data, and is suitable to process images of all sizes.
+                        </p>
+                    </div>
+                    <div class="tile-spacer"></div>
+                </div>
+            </article>
+        </div>
+    </section>
+    <footer>
+        <div id="copyright">
+            <b>Disclaimer: </b>This website is part of an honours research project and should not be used as a substitute for professional lung cancer diagnosis or medical advice. If you have any medical-related inquiries, please consult a healthcare
+            professional.
+        </div>
+    </footer>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='styles/scripts/gen') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='styles/scripts/home') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='styles/scripts/modernizr-custom') }}"></script>
+    <script defer="" type="text/javascript" src="{{ url_for('static', filename='styles/scripts/jquery-flexslider') }}"></script>
+
+    <script type="text/javascript">
+        $(window).load(function() {
+            $('.flexslider').flexslider({
+                controlNav: true,
+                directionNav: false,
+                animation: "fade",
+                animationSpeed: 1600
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        var maildivider = "[at]"
+        for (i = 0; i <= (document.links.length - 1); i++) {
+            if (document.links[i].href.indexOf(maildivider) != -1) document.links[i].href = document.links[i].href.split(maildivider)[0] + "@" + document.links[i].href.split(maildivider)[1]
+        }
+    </script>
+
+</body>

@@ -1,0 +1,99 @@
+jQuery(function($) {
+ function mobileNav() {
+  if (($('header').css('height') === '102px') || ($('header').css('height') === '80px')) {
+   $('body').addClass('mobile-nav');
+   $('a#mobile-x').removeClass('active');
+   $('header nav').removeClass('present');
+   $('header nav').addClass('absent');
+  } else {
+   $('body').removeClass('mobile-nav');
+   $('#coverall').removeClass('on');
+   $('header nav').removeClass('absent');
+   $('header nav').addClass('present');
+  }
+ }
+ $('a#mobile-x').on('click', function(){
+  $(this).toggleClass('active');
+  if ($('header nav').hasClass('absent') ) {
+   $('header nav').removeClass('absent');
+   $('header nav').addClass('present');
+   $('#coverall').addClass('on');
+  } else {
+   $('header nav').removeClass('present');
+   $('header nav').addClass('absent');
+   $('#coverall').removeClass('on');
+  }
+  return false;
+ });
+ $('header nav ul li ul li a').on('click', function(){
+  if ($('body').hasClass('mobile-nav')) {
+   $('header nav').removeClass('present');
+   $('header nav').addClass('absent');
+   $('#coverall').removeClass('on');
+   $('a#mobile-x').removeClass('active');
+  }
+ });
+ $('#coverall').on('click', function() {
+  $('#coverall').toggleClass('on');
+  $('header nav').removeClass('present');
+  $('header nav').addClass('absent');
+  $('a#mobile-x').removeClass('active');
+ });
+ $('body.mobile-nav header nav ul li ul li a').on('click', function(){
+   $('header nav').removeClass('present');
+   $('header nav').addClass('absent');
+   $('#coverall').removeClass('on');
+ });
+ //-- First level nav tap functionality --//
+ $('header>nav>ul>li>a').on('click', function(e){
+  if ( $('body').hasClass('mobile-nav') ) {
+   //-- The mobile nav is active, no need for special functionality --//
+  } else if ( $('html').hasClass('touchevents') ) {
+   //-- Desktop view but uses touchevents (tablets) --//
+   $('header>nav>ul>li>ul').removeAttr('style');
+   e.preventDefault();
+   var destination = this.href;
+   if ( $(this).hasClass('tap') ) {
+    window.location.href = destination;
+   } else {
+    $('header>nav>ul>li>a').removeClass('tap');
+    $(this).addClass('tap');
+   }
+  }
+ });
+ //-- Second level nav tap functionality --//
+ $('header>nav>ul>li>ul>li>a').on('click', function(e){
+  if ( $('body').hasClass('mobile-nav') ) {
+   //-- The mobile nav is active, no need for special functionality --//
+  } else if ( $('html').hasClass('touchevents') ) {
+   //-- Desktop view but uses touchevents (tablets) --//
+   $(this).parent('li').parent('ul').css({display: 'none'});
+   $('header>nav>ul>li>a').removeClass('tap');
+  }
+ });
+ $(document).ready(function() {
+  mobileNav();
+  var resizeId;
+  var windowWidth;
+  var windowHeight;
+  function doneResizing() {
+   if ($(window).width() !== windowWidth) {
+    windowWidth = $(window).width();
+    //-- Width Changed --//
+    mobileNav();
+    $('header>nav>ul>li>a').removeClass('tap');
+   } else if ($(window).height() !== windowHeight) {
+    windowHeight = $(window).height();
+    //-- Height Changed --//
+   } else {
+    //-- No actual resize, do nothing --//
+   }
+  }
+  $(window).resize(function() {
+   clearTimeout(resizeId);
+   var windowWidth = $(window).width();
+   var windowHeight = $(window).height();
+   resizeId = setTimeout(doneResizing, 100);
+  });
+ });
+});

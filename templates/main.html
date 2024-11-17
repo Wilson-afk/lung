@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-title" content="MolecularMatch" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mm.css') }}" type="text/css" media="all" />
+    <title>Diagnosis Results</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="Lung cancer diagnosis using machine learning models" />
+    <link rel="canonical" href="main.html" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(135deg, #0f0f0f 20%, #121212 50%, #191919 100%);
+            background-size: 400% 400%;
+            animation: gradientAnimation 8s ease infinite;
+            color: white;
+            font-family: 'Lato', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: row;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 1.2s ease forwards;
+            width: 100%;
+            margin-top: 100px;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        header {
+            background-color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        header a {
+            color: #bb3030;
+            font-weight: bold;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+        
+        .image-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .image-container {
+            margin: 0 10px;
+            border: 2px solid #fff;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #2c2c2c;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        
+        .image-container img {
+            max-width: 500px;
+            max-height: 400px;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+        
+        .image-label {
+            text-align: center;
+            color: #ffffff;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        
+        .diagnosis-text {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            border: 2px solid #bb3030;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        
+        .diagnosis-text span {
+            font-family: 'Roboto Slab', serif;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e60000;
+        }
+        
+        .gradcam-description {
+            text-align: center;
+            color: #ffffff;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            padding: 15px;
+            background-color: #2c2c2c;
+            border-radius: 8px;
+            border: 1px solid #444;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        
+        .prediction-confidence {
+            text-align: center;
+            color: #ffffff;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            padding: 15px;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            border: 2px solid #28a745;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        
+        .feedback-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #333;
+            border-radius: 8px;
+            border: 2px solid #555;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        
+        .feedback-section button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .feedback-section button:hover {
+            background-color: #555;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            background-color: #1a1a1a;
+        }
+        
+        footer b {
+            color: #bb3030;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: #2c2c2c;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .modal-message {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        #emailInput {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        #confirmBtn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        #confirmBtn:hover {
+            background-color: #218838;
+        }
+        
+        .side-panel {
+            width: 20%;
+            padding: 20px;
+            background-color: #1c1c1c;
+            color: white;
+            border-radius: 8px;
+            border: 2px solid #444;
+            margin: 10px;
+        }
+        
+        .side-panel h3 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        
+        .side-panel p {
+            font-size: 1rem;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .side-panel ul {
+            font-size: 1rem;
+            color: #cccccc;
+            margin-left: 20px;
+        }
+        
+        main .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .side-panel1 {
+            width: 20%;
+            padding: 20px;
+            margin-right: 50px;
+            color: white;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            border: 2px solid #444;
+        }
+        
+        .side-panel1 h3 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        
+        .side-panel1 p {
+            font-size: 1rem;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .side-panel1 ul {
+            font-size: 1rem;
+            color: #cccccc;
+            padding-left: 50px;
+        }
+        
+        main .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .content-center {
+            width: 60%;
+        }
+        
+        .prediction-confidence {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .table-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        table {
+            width: 90%;
+            max-width: 600px;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            color: black;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+            color: black;
+        }
+        /* Toast Notification Styles */
+        
+        .toast {
+            visibility: hidden;
+            /* Hidden by default */
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="present">
+            <ul>
+                <li><a href="{{ url_for('download_report') }}">Report</a></li>
+            </ul>
+            <!-- <ul>
+                <li><a href="{{ url_for('feedback') }}">Feedback</a></li>
+            </ul> -->
+            <ul>
+                <li><a href="{{ url_for('upload') }}">Back</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="content-wrapper">
+
+            <div class="side-panel">
+                <h3>Whats Uncertainty</h3>
+                <p>Uncertainty in machine learning refers to how confident the model is about its predictions. It helps indicate the level of confidence or ambiguity the model has in its classification decision. Even if a model predicts a specific class,
+                    high uncertainty suggests the model is not entirely sure, which can be critical in medical diagnostics, where accurate and reliable predictions are crucial.</p>
+
+
+            </div>
+
+
+            <div class="content-center">
+
+                <section class="image-row" style="display: flex; justify-content: center; gap: 20px;">
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='outputs/original_image.png') }}" alt="CT Scan 1" style="width: 300px; height: 300px; object-fit: cover;" />
+                        <p class="image-label">Original CT Scan</p>
+                    </div>
+
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='outputs/overlayed_image.png') }}" alt="Grad-CAM Visualization" style="width: 300px; height: 300px; object-fit: cover;" />
+                        <p class="image-label">Grad-CAM Output</p>
+                    </div>
+                </section>
+
+
+                <div class="diagnosis-text">
+                    Diagnosis: <span>Cancer ({{ predicted_class_label }})</span>
+                </div>
+
+                <div class="gradcam-description">
+                    The Grad-CAM visualization highlights the areas in the CT scan that the model focused on when making the cancer diagnosis. The red areas represent the regions most important for the model's decision.
+                </div>
+
+                <div class="prediction-confidence">
+                    Model Prediction Confidence: <span>{{ max_mean_probs }} %</span>
+                </div>
+
+                <div class="prediction-confidence" style="font-size: 1rem;">
+
+                    <h2>Class Probabilities and Uncertainties</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Probability Score (%)</th>
+                                <th>Uncertainty (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="color: red;">
+                                <td>Adenocarcinoma</td>
+                                <td>{{ mean_probs[0] }}</td>
+                                <td>{{ std_probs[0] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Large Cell Carcinoma</td>
+                                <td>{{ mean_probs[1] }}</td>
+                                <td>{{ std_probs[1] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Normal</td>
+                                <td>{{ mean_probs[2] }}</td>
+                                <td>{{ std_probs[2] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Squamous Cell Carcinoma</td>
+                                <td>{{ mean_probs[3] }}</td>
+                                <td>{{ std_probs[3] }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="gradcam-description">
+                    {{ diagnostic_message }}
+                </div>
+
+                <div class="feedback-section">
+                    {% if show_submit_button %}
+                    <input type="email" id="emailInput" placeholder="Enter your email address" required />
+                    <button id="submitBtn">Submit for Review</button> {% endif %}
+                </div>
+
+                <div id="toast" class="toast"></div>
+            </div>
+
+            <div class="side-panel1">
+                {% if predicted_class_label == 'Adenocarcinoma' %}
+                <h3>What is Adenocarcinoma?</h3>
+                <p>Adenocarcinoma is a type of cancer that forms in mucus-secreting glands. It can occur in various organs but is most commonly found in the lungs. Lung adenocarcinoma is the most common type of lung cancer.</p>
+                <ul>
+                    <br>
+                    <li><b>Symptoms:</b> Cough, shortness of breath, chest pain</li>
+                    <li><b>Treatment:</b> Surgery, chemotherapy, radiation, targeted therapy</li>
+                </ul>
+                <br> {% elif predicted_class_label == 'Large Cell Carcinoma' %}
+                <h3>What is Large Cell Carcinoma?</h3>
+                <p>Large Cell Carcinoma is a type of non-small cell lung cancer that can appear in any part of the lung. It is known for its rapid growth and can be difficult to treat.</p>
+                <ul>
+                    <br>
+                    <li><b>Symptoms:</b> Persistent cough, weight loss, fatigue</li>
+                    <li><b>Treatment:</b> Surgery, radiation therapy, immunotherapy</li>
+                </ul>
+                <br> {% elif predicted_class_label == 'Normal' %}
+                <h3>No Cancer Detected</h3>
+                <p>The AI model did not detect any signs of lung cancer. This result indicates a normal lung scan, but it is still important to consult a healthcare professional for a full diagnosis.</p>
+                <ul>
+                    <br>
+                    <li><b>Recommendation:</b> Regular check-ups, follow-up scans if symptoms persist</li>
+                </ul>
+
+                {% elif predicted_class_label == 'Squamous Cell Carcinoma' %}
+                <h3>What is Squamous Cell Carcinoma?</h3>
+                <p>Squamous Cell Carcinoma is a type of non-small cell lung cancer that starts in the squamous cells lining the airways. It is often linked to smoking.</p>
+                <ul>
+                    <br>
+                    <li><b>Symptoms:</b> Persistent cough, hoarseness, chest pain</li>
+                    <li><b>Treatment:</b> Surgery, chemotherapy, targeted therapy</li>
+                </ul>
+                <br> {% else %}
+                <h3>Unknown Cancer Type</h3>
+                <p>The predicted cancer type is not recognized. Please consult a healthcare professional for further evaluation.</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <b style="color: white;">Disclaimer:</b> This website is part of an honours research project and should not be used as a substitute for professional lung cancer diagnosis or medical advice. If you have any medical-related inquiries, please
+            consult a healthcare professional.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const submitBtn = document.getElementById('submitBtn');
+            const emailInput = document.getElementById('emailInput');
+            const toast = document.getElementById('toast');
+
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            submitBtn.addEventListener('click', () => {
+                const email = emailInput.value.trim();
+
+                if (!email) {
+                    showToast("Please enter your email address.");
+                    return;
+                }
+
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    showToast("Please enter a valid email address.");
+                    return;
+                }
+
+                showToast(`Thank you! The scan has been submitted for review. We will notify you at ${email} once the review is complete.`);
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

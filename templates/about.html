@@ -1,0 +1,111 @@
+﻿<!doctype html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-title" content="MolecularMatch">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mm.css') }}" type="text/css" media="all">
+    <title>Diagnosis</title>
+    <meta name='keywords' content='bioinformatics, clinical informatics, clinical trial matching, genome informatics, bespoke data analysis, clinical interpretation, precision oncology, treatment options, therapeutic options, Clinical Decision Support System, Physician Portal, Tumor board support, Variant annotations, Pathology reports, Clinical Interpretation, patient recruitment, physician reporting portal'>
+    <meta name='description' content='Precision oncology, immunotherapy and bioinformatics are combined with clinical insights to empower your solution.'>
+    <link rel='canonical' href='MMPower-Molecular-Knowledgebase'>
+    <script src="{{ url_for('static', filename='styles/ajax/libs/jquery/2.2.2/jquery.min.js') }}"></script>
+    <style>
+        header {
+            background-color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        header a {
+            color: #bb3030;
+            font-weight: bold;
+            font-size: 14px;
+            text-decoration: none;
+            padding: -10px;
+        }
+        
+        body {
+            font-size: 14px;
+        }
+        
+        solution {
+            margin-left: 50px;
+            margin-right: 60px;
+        }
+        
+        #copyright {
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body class="solution-sub MMPower">
+    <header>
+        <nav class="present">
+            <ul>
+                <li>
+                    <a href="{{ url_for('index') }}">Home</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('upload') }}">Scan</a>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('feedback') }}">Sign Up</a>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+    <section class="solution" id="ss1" style="margin-bottom: 25px;">
+        <div class="margin">
+            <div class="wysiwyg">
+                <div class="table">
+                    <div class="tr">
+                        <div class="td left">
+                            <h1>Using Deep Learning to Predict Lung Cancer Subtypes from Histology Images
+                            </h1>
+                        </div>
+                        <div class="td right"></div>
+                    </div>
+                </div>
+
+                <p>This platform presents a deep learning lung cancer detection model developed by Munyaradzi Wilson Mupfururirwa and Dr. Musalula Sinkala (supervisor) as an <b>Honours research project</b> in Bioinformatics with the title: <b>"Using Deep Learning to Predict Lung Cancer Subtypes from Histology Images"</b>.
+                    The model leverages transfer learning by using pretrained models to classify lung cancer subtypes, aiming to contribute to early detection and improved treatment planning. It is part of a broader effort to integrate artificial intelligence
+                    into healthcare, enhancing diagnostic precision for lung cancer patients. However, this tool is not intended to replace clinical diagnosis, and users are encouraged to consult medical professionals for any health-related concerns.
+                    You can find a summary of the project introduction below.</p>
+
+            </div>
+            <div class="wysiwyg">
+                <img style="height: 255px; width: 500px;" class="sidebar w50a" src="{{ url_for('static', filename='images/2.png') }}" width="100" height="90" alt="">
+
+                <h6>&nbsp;</h6>
+                <h5>Introduction</h5>
+
+                <p>
+                    Cancer-related mortality constitutes a significant health burden globally, marked by aggressive malignancies, late-stage diagnoses, and the unavailability of timely and effective treatment options. Lung cancer, in particular, accounts for 18% of these
+                    deaths annually. This high mortality rate is especially detrimental in middle- and low-income countries, where limited access to early detection, advanced diagnostics, and adequate treatment contribute to poor outcomes. In recent years,
+                    however, screening programs have become a crucial component in reducing lung cancer mortality by enabling early detection, particularly in high-risk populations. Due to challenges such as invasiveness, overdiagnosis and lack of adequate
+                    healthcare specialists in the current screening programs, there is a need for developing more refined screening methods, potentially aided by deep learning and artificial intelligence.
+                </p>
+
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <footer style="position: fixed;">
+        <div id="copyright">
+            <b>Disclaimer: </b>This website is part of an honours research project and should not be used as a substitute for professional lung cancer diagnosis or medical advice. If you have any medical-related inquiries, please consult a healthcare
+            professional.
+        </div>
+    </footer>
+</body>

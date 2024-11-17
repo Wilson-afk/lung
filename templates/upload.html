@@ -1,0 +1,359 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-title" content="MolecularMatch" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,900,900i|Radley:400,400i" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mm.css') }}" type="text/css" media="all" />
+    <title>Diagnosis</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="Let us demonstrate to you how we can enhance your business!" />
+    <link rel="canonical" href="upload.html" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        #copyright {
+            font-size: 12px;
+        }
+        
+        #progress-wrapper {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .progress-bar {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 20px;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            width: 0;
+            background-color: #28a745;
+            transition: width 0.1s ease-in-out;
+        }
+        
+        #progress-status {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #555;
+        }
+        
+        #image-preview {
+            display: none;
+            margin-bottom: 20px;
+        }
+        
+        #image-preview img {
+            max-width: 600px;
+            max-height: 300px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            background-color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        header a {
+            color: #bb3030;
+            font-weight: bold;
+            font-size: 14px;
+            text-decoration: none;
+            padding: -10px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .alert-box {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 350px;
+            font-size: 1.1em;
+            color: #333;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .close-btn {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .close-btn:hover {
+            background: #218838;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                background: rgba(0, 0, 0, 0);
+            }
+            to {
+                background: rgba(0, 0, 0, 0.6);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        #flash-messages {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-bottom: 2px solid #f5c6cb;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+        }
+        
+        .flash-message {
+            margin-left: 10px;
+            flex-grow: 1;
+        }
+        
+        #close-flash {
+            background: none;
+            border: none;
+            color: #721c24;
+            font-weight: bold;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body class="contact-us">
+
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div id="flash-messages">
+        <span>⚠️</span>
+        <span class="flash-message">{{ messages[0] }}</span>
+        <button id="close-flash" aria-label="Close alert">&times;</button>
+    </div>
+    {% endif %} {% endwith %}
+
+    <header>
+        <nav class="present">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="#">Scan</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="{{ url_for('feedback') }}">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <hr />
+
+    <section id="request-a-demo" style="flex-direction: column; justify-content: center; 
+    background-color: #ffffff; font-size: 0.8em; overflow: hidden;">
+        <div class="table" style="margin-top: 10px; padding-top: 20px;">
+            <div class="tr" style="margin-top: 10px; padding-top: 20px;">
+                <div class="td" style="margin-top: 20px; padding-top: 50px;">
+                    <h1>Upload your CT scan</h1>
+                    <h3>Detect if your scan is normal...</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="request-form" style="display: flex; justify-content: center; align-items: center; padding: 60px 0; 
+    background-color: #ffffff;">
+
+        <form id="request-demo" method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" style="background-color: #ffffff; padding: 40px; border-radius: 8px; max-width: 800px; width: 100%; box-sizing: border-box; text-align: center; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+
+            <p style="color: #555; font-size: 1rem; margin-bottom: 10px; text-align: center;">
+                We will analyze your scan to detect if it is normal or abnormal.
+            </p>
+
+            <div id="image-preview" style="height: 232px;">
+                <img style="height: 100%; max-width: 100%; object-fit: contain;" id="preview-img" src="" alt="Image Preview" />
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 800px;">
+                <div style="flex: 1; text-align: left;">
+                    <label for="image-upload" style="display: block; font-size: 1.2rem; color: #555; margin-bottom: 5px;">
+                Select an Image 
+                <span title="Only JPEG, PNG, and TIFF images are accepted. Max size: 10MB" style="cursor: help; font-size: 1rem; color: #28a745;">&#9432;</span>
+            </label>
+                    <input id="image-upload" type="file" name="csvfile" value="" accept="image/png, image/jpeg, image/gif" required style="padding: 12px; font-size: 1rem; border: 2px solid #cccccc; border-radius: 6px; width: 100%; max-width: 400px; box-sizing: border-box; height: 48px;"
+                    />
+                </div>
+
+                <div style="flex-shrink: 0;">
+                    <label style="display: block; font-size: 1.2rem; color: white; margin-bottom: 5px;">
+                Select an Image <span></span>
+            </label>
+                    <input type="submit" name="" value="Submit" style="background-color: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-size: 1.1rem; cursor: pointer; height: 48px;" />
+                </div>
+            </div>
+
+            <div id="progress-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 400px;">
+                <div class="progress-bar" style="width: 100%; background-color: #e0e0e0; border-radius: 8px; overflow: hidden; height: 20px;">
+                    <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%; height: 100%; background-color: #28a745;"></div>
+                </div>
+                <p id="progress-status" style="font-size: 1rem; color: #555;">Scanning... 0%</p>
+            </div>
+
+        </form>
+
+
+
+    </section>
+
+    <footer>
+        <div id="copyright">
+            <b>Disclaimer: </b>This website is part of an honours research project and should not be used as a substitute for professional lung cancer diagnosis or medical advice. If you have any medical-related inquiries, please consult a healthcare
+            professional.
+        </div>
+    </footer>
+
+    <script>
+        const form = document.getElementById('request-demo');
+        const fileInput = document.getElementById('image-upload');
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        const progressWrapper = document.getElementById('progress-wrapper');
+        const progressStatus = document.getElementById('progress-status');
+        const imagePreview = document.getElementById('image-preview');
+        const previewImg = document.getElementById('preview-img');
+
+        fileInput.addEventListener('change', function() {
+
+            const file = fileInput.files[0];
+            const maxSize = 10 * 1024 * 1024;
+
+            if (file.size > maxSize) {
+                alert('The selected file is too large. Please choose a file less than 10 MB.');
+                fileInput.value = '';
+                imagePreview.style.display = 'none';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.style.display = 'block';
+                previewImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            progressWrapper.style.display = 'block';
+            progressBarFill.style.width = '0%';
+            progressStatus.textContent = 'Scanning... 0%';
+
+            let percentComplete = 0;
+
+            const interval = setInterval(function() {
+                percentComplete += 0.5;
+                progressBarFill.style.width = `${percentComplete}%`;
+                progressStatus.textContent = `Scanning... ${Math.round(percentComplete)}%`;
+
+                if (percentComplete >= 100) {
+                    clearInterval(interval);
+                    form.submit();
+                }
+            }, 20);
+        });
+
+
+
+
+
+        const flashMessage = document.getElementById('flash-messages');
+        const closeButton = document.getElementById('close-flash');
+
+        // Close the flash message when the user clicks on the close button
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                flashMessage.style.display = 'none';
+            });
+        }
+
+        // Also close the flash message when the user clicks anywhere on the alert box
+        if (flashMessage) {
+            flashMessage.addEventListener('click', () => {
+                flashMessage.style.display = 'none';
+            });
+        }
+    </script>
+
+</body>
+
+</html>

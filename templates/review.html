@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-title" content="MolecularMatch" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mm.css') }}" type="text/css" media="all" />
+    <title>Diagnosis Results</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="Lung cancer diagnosis using machine learning models" />
+    <link rel="canonical" href="main.html" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(135deg, #0f0f0f 20%, #121212 50%, #191919 100%);
+            background-size: 400% 400%;
+            animation: gradientAnimation 8s ease infinite;
+            color: white;
+            font-family: 'Lato', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: row;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 1.2s ease forwards;
+            width: 100%;
+            margin-top: 100px;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        header {
+            background-color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        header a {
+            color: #bb3030;
+            font-weight: bold;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+        
+        .image-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .image-container {
+            margin: 0 10px;
+            border: 2px solid #fff;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #2c2c2c;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        
+        .image-container img {
+            max-width: 500px;
+            max-height: 400px;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+        
+        .image-label {
+            text-align: center;
+            color: #ffffff;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        
+        .diagnosis-text {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            border: 2px solid #bb3030;
+            width: 100%;
+            /* Changed to full width */
+            max-width: 800px;
+            margin: 20px auto;
+            /* Centered */
+            animation: fadeInUp 1s ease-in-out;
+        }
+        
+        .diagnosis-text span {
+            font-family: 'Roboto Slab', serif;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e60000;
+        }
+        
+        .gradcam-description {
+            text-align: center;
+            color: #ffffff;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            padding: 15px;
+            background-color: #2c2c2c;
+            border-radius: 8px;
+            border: 1px solid #444;
+            width: 100%;
+            /* Changed to full width */
+            max-width: 800px;
+            margin: 20px auto;
+            /* Centered */
+        }
+        
+        .prediction-confidence {
+            text-align: center;
+            color: #ffffff;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            padding: 15px;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            border: 2px solid #28a745;
+            width: 100%;
+            /* Changed to full width */
+            max-width: 800px;
+            margin: 20px auto;
+            /* Centered */
+        }
+        
+        .feedback-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            width: 100%;
+            /* Changed to full width */
+            max-width: 800px;
+            margin: 20px auto;
+            /* Centered */
+            background-color: #333;
+            border-radius: 8px;
+            border: 2px solid #555;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        
+        .feedback-section button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .feedback-section button:hover {
+            background-color: #555;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            background-color: #1a1a1a;
+        }
+        
+        footer b {
+            color: #bb3030;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: #2c2c2c;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .modal-message {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        #emailInput {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        #confirmBtn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        #confirmBtn:hover {
+            background-color: #218838;
+        }
+        
+        .side-panel {
+            width: 0%;
+            padding: 20px;
+            background-color: #1c1c1c;
+            color: white;
+            border-radius: 8px;
+            border: 2px solid #444;
+            margin: 10px;
+        }
+        
+        .side-panel h3 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        
+        .side-panel p {
+            font-size: 1rem;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .side-panel ul {
+            font-size: 1rem;
+            color: #cccccc;
+            margin-left: 20px;
+        }
+        
+        main .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .side-panel1 {
+            width: 0%;
+            padding: 20px;
+            margin-right: 50px;
+            color: white;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            border: 2px solid #444;
+        }
+        
+        .side-panel1 h3 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        
+        .side-panel1 p {
+            font-size: 1rem;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .side-panel1 ul {
+            font-size: 1rem;
+            color: #cccccc;
+            padding-left: 50px;
+        }
+        
+        main .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .content-center {
+            width: 100%;
+        }
+        
+        .prediction-confidence {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .table-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        table {
+            width: 90%;
+            max-width: 600px;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            color: black;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+            color: black;
+        }
+        
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="present">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Exit</a></li>
+            </ul>
+            <ul>
+                <li><a href="#">User</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="content-wrapper">
+
+            <div class="content-center">
+
+                <section class="image-row" style="display: flex; justify-content: center; gap: 20px;">
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='outputs/original_image.png') }}" alt="CT Scan 1" style="width: 600px; 
+                        height: 400px; object-fit: cover;" />
+                        <p class="image-label">Original CT Scan</p>
+                    </div>
+
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='outputs/overlayed_image.png') }}" alt="Grad-CAM Visualization" style="width: 600px; 
+                        height: 400px; object-fit: cover;" />
+                        <p class="image-label">Grad-CAM Output</p>
+                    </div>
+                </section>
+
+
+                <div class="diagnosis-text">
+                    Diagnosis: <span>Cancer ({{ predicted_class_label }})</span>
+                </div>
+
+                <div class="gradcam-description">
+                    The Grad-CAM visualization highlights the areas in the CT scan that the model focused on when making the cancer diagnosis. The red areas represent the regions most important for the model's decision.
+                </div>
+
+                <div class="prediction-confidence">
+                    Model Prediction Confidence: <span>{{ max_mean_probs }} %</span>
+                </div>
+
+
+
+
+
+                <div class="feedback-section">
+                    {% if show_submit_button %}
+                    <input type="email" id="emailInput" placeholder="Add Feedback" required />
+                    <button id="submitBtn">Send Review</button> {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <b style="color: white;">Disclaimer:</b> This website is part of an honours research project and should not be used as a substitute for professional lung cancer diagnosis or medical advice. If you have any medical-related inquiries, please
+            consult a healthcare professional.
+        </div>
+    </footer>
+
+    <script>
+    </script>
+
+
+</body>
+
+</html>
